@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 
 function Home() {
   const loadDemoData = () => {
-    // Create demo users
     const demoUsers = [
       {
         _id: '1',
@@ -29,7 +28,6 @@ function Home() {
       }
     ];
     
-    // Create demo services
     const demoServices = [
       {
         _id: 's1',
@@ -80,47 +78,95 @@ function Home() {
   };
 
   return (
-    <div className="hero">
-      <div className="hero-content">
-        <h1>GShop</h1>
-        <p className="tagline">Trade Skills, Not Money</p>
-        <p className="description">
+    <div style={{
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '20px'
+    }}>
+      <div style={{
+        background: 'white',
+        borderRadius: '20px',
+        padding: '50px',
+        maxWidth: '600px',
+        width: '100%',
+        textAlign: 'center',
+        boxShadow: '0 20px 60px rgba(0,0,0,0.3)'
+      }}>
+        <h1 style={{fontSize: '48px', marginBottom: '10px', color: '#667eea'}}>GShop</h1>
+        <p style={{fontSize: '24px', color: '#666', marginBottom: '20px'}}>Trade Skills, Not Money</p>
+        
+        <p style={{color: '#555', marginBottom: '30px', lineHeight: '1.6'}}>
           Join your community in a moneyless exchange of skills and services. 
           Earn credits by helping others, spend credits to get help.
         </p>
         
-        <div className="cta-buttons">
-          <Link to="/register" className="btn btn-primary">Get Started</Link>
-          <Link to="/login" className="btn btn-secondary">Login</Link>
+        <div style={{display: 'flex', gap: '15px', justifyContent: 'center', marginBottom: '30px'}}>
+          <Link to="/register" style={{
+            padding: '15px 30px',
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            color: 'white',
+            textDecoration: 'none',
+            borderRadius: '8px',
+            fontWeight: 'bold',
+            fontSize: '16px'
+          }}>Get Started</Link>
+          
+          
+          <Link to="/login" style={{
+            padding: '15px 30px',
+            background: '#f0f0f0',
+            color: '#333',
+            textDecoration: 'none',
+            borderRadius: '8px',
+            fontWeight: 'bold',
+            fontSize: '16px'
+          }}>Login</Link>
         </div>
         
-        <div style={{ marginTop: '30px', padding: '20px', background: '#f0f8ff', borderRadius: '8px' }}>
-          <p><strong>Want to try it first?</strong></p>
-          <button onClick={loadDemoData} className="btn btn-success">
+        <div style={{ 
+          marginTop: '20px', 
+          padding: '20px', 
+          background: '#f0f8ff', 
+          borderRadius: '12px',
+          border: '2px solid #667eea'
+        }}>
+          <p style={{fontWeight: 'bold', marginBottom: '10px'}}>Want to try it first?</p>
+          <button onClick={loadDemoData} style={{
+            padding: '12px 24px',
+            background: '#4CAF50',
+            color: 'white',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontSize: '16px',
+            fontWeight: 'bold'
+          }}>
             Load Demo Data
           </button>
           <p style={{ fontSize: '12px', marginTop: '10px', color: '#666' }}>
-            This creates sample users and services so you can explore the app.
+            Creates sample users and services so you can explore immediately.
           </p>
         </div>
         
-        <div className="features">
-          <div className="feature">
-            <span className="feature-icon">🎯</span>
-            <h3>Share Your Skills</h3>
-            <p>Offer what you're good at</p>
+        <div style={{display: 'flex', justifyContent: 'center', gap: '30px', marginTop: '40px'}}>
+          <div style={{textAlign: 'center'}}>
+            <div style={{fontSize: '40px', marginBottom: '10px'}}>🎯</div>
+            <h3 style={{marginBottom: '5px'}}>Share Skills</h3>
+            <p style={{color: '#666', fontSize: '14px'}}>Offer what you're good at</p>
           </div>
           
-          <div className="feature">
-            <span className="feature-icon">🤝</span>
-            <h3>Help Neighbors</h3>
-            <p>Build community connections</p>
+          <div style={{textAlign: 'center'}}>
+            <div style={{fontSize: '40px', marginBottom: '10px'}}>🤝</div>
+            <h3 style={{marginBottom: '5px'}}>Help Others</h3>
+            <p style={{color: '#666', fontSize: '14px'}}>Build community</p>
           </div>
           
-          <div className="feature">
-            <span className="feature-icon">⭐</span>
-            <h3>Earn Credits</h3>
-            <p>Get help when you need it</p>
+          <div style={{textAlign: 'center'}}>
+            <div style={{fontSize: '40px', marginBottom: '10px'}}>⭐</div>
+            <h3 style={{marginBottom: '5px'}}>Earn Credits</h3>
+            <p style={{color: '#666', fontSize: '14px'}}>Get help when needed</p>
           </div>
         </div>
       </div>

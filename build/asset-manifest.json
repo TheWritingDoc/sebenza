@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/gshop-app/static/css/main.c93937fc.css",
-    "main.js": "/gshop-app/static/js/main.e3dd2d12.js",
+    "main.js": "/gshop-app/static/js/main.0e9cff18.js",
     "index.html": "/gshop-app/index.html",
     "main.c93937fc.css.map": "/gshop-app/static/css/main.c93937fc.css.map",
-    "main.e3dd2d12.js.map": "/gshop-app/static/js/main.e3dd2d12.js.map"
+    "main.0e9cff18.js.map": "/gshop-app/static/js/main.0e9cff18.js.map"
   },
   "entrypoints": [
     "static/css/main.c93937fc.css",
-    "static/js/main.e3dd2d12.js"
+    "static/js/main.0e9cff18.js"
   ]
 }
