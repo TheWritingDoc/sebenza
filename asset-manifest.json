@@ -1,0 +1,11 @@
+{
+  "files": {
+    "main.css": "/gshop-app/static/css/main.e42d41e9.css",
+    "main.js": "/gshop-app/static/js/main.801e011d.js",
+    "index.html": "/gshop-app/index.html"
+  },
+  "entrypoints": [
+    "static/css/main.e42d41e9.css",
+    "static/js/main.801e011d.js"
+  ]
+}
