@@ -1,5 +1,4 @@
 ﻿import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 
 function Profile({ user, setUser }) {
   const [services, setServices] = useState([]);
@@ -11,69 +10,55 @@ function Profile({ user, setUser }) {
     category: '',
     credits: 1
   });
-  const [categories, setCategories] = useState([]);
+  
+  const categories = [
+    'Plumbing', 'Electrical', 'Carpentry', 'Painting', 'Cleaning',
+    'Gardening', 'Cooking', 'Tutoring', 'Computer Repair', 'Sewing',
+    'Driving', 'Babysitting', 'Elderly Care', 'Pet Care', 'Other'
+  ];
 
   useEffect(() => {
     fetchMyServices();
     fetchTransactions();
-    axios.get('/api/categories').then(res => setCategories(res.data));
   }, []);
 
-  const fetchMyServices = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      // This would need a new endpoint, for now we'll skip
-    } catch (err) {
-      console.error('Failed to load services');
-    }
+  const fetchMyServices = () => {
+    const allServices = JSON.parse(localStorage.getItem('gshop_services') || '[]');
+    const myServices = allServices.filter(s => s.providerId === user._id);
+    setServices(myServices);
   };
 
-  const fetchTransactions = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const res = await axios.get('/api/transactions', {
-        headers: { 'x-auth-token': token }
-      });
-      setTransactions(res.data);
-    } catch (err) {
-      console.error('Failed to load transactions');
-    }
+  const fetchTransactions = () => {
+    const allTransactions = JSON.parse(localStorage.getItem('gshop_transactions') || '[]');
+    const myTransactions = allTransactions.filter(t => 
+      t.requesterId === user._id || t.providerId === user._id
+    );
+    setTransactions(myTransactions);
   };
 
-  const addService = async (e) => {
+  const addService = (e) => {
     e.preventDefault();
-    try {
-      const token = localStorage.getItem('token');
-      await axios.post('/api/services', newService, {
-        headers: { 'x-auth-token': token }
-      });
-      setShowAddService(false);
-      setNewService({ title: '', description: '', category: '', credits: 1 });
-      alert('Service added successfully!');
-    } catch (err) {
-      alert(err.response?.data?.message || 'Failed to add service');
-    }
-  };
-
-  const completeTransaction = async (transactionId, rating) => {
-    try {
-      const token = localStorage.getItem('token');
-      const res = await axios.put(`/api/transactions/${transactionId}/complete`, {
-        rating,
-        review: ''
-      }, {
-        headers: { 'x-auth-token': token }
-      });
-      setUser(prev => ({ ...prev, credits: res.data.requesterCredits }));
-      fetchTransactions();
-      alert('Transaction completed!');
-    } catch (err) {
-      alert(err.response?.data?.message || 'Failed to complete');
-    }
+    const allServices = JSON.parse(localStorage.getItem('gshop_services') || '[]');
+    
+    const service = {
+      _id: Date.now().toString(),
+      providerId: user._id,
+      providerName: user.name,
+      ...newService,
+      location: user.location
+    };
+    
+    allServices.push(service);
+    localStorage.setItem('gshop_services', JSON.stringify(allServices));
+    
+    setShowAddService(false);
+    setNewService({ title: '', description: '', category: '', credits: 1 });
+    fetchMyServices();
+    alert('Service added!');
   };
 
   return (
-    <div>
+    <div style={{ padding: '20px' }}>
       <div className="card">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
           <div>
@@ -145,7 +130,7 @@ function Profile({ user, setUser }) {
             </div>
 
             <div className="form-group">
-              <label>Credits Required</label>
+              <label>Credits Required (1-10)</label>
               <input
                 type="number"
                 className="form-control"
@@ -160,6 +145,23 @@ function Profile({ user, setUser }) {
             <button type="submit" className="btn btn-success">Add Service</button>
           </form>
         )}
+        
+        {services.length === 0 ? (
+          <p style={{ marginTop: '20px', color: '#666' }}>No services yet. Add one above!</p>
+        ) : (
+          services.map(service => (
+            <div key={service._id} className="service-card" style={{ marginTop: '10px' }}>
+              <div>
+                <strong>{service.title}</strong>
+                <p>{service.description}</p>
+                <span className="category-tag">{service.category}</span>
+              </div>
+              <div>
+                <span className="credits-badge">{service.credits} credits</span>
+              </div>
+            </div>
+          ))
+        )}
       </div>
 
       <div className="card">
@@ -171,13 +173,9 @@ function Profile({ user, setUser }) {
           transactions.map(t => (
             <div key={t._id} className="service-card" style={{ marginBottom: '10px' }}>
               <div>
-                <strong>{t.serviceId?.title || 'Unknown Service'}</strong>
+                <strong>{t.serviceTitle}</strong>
                 <div style={{ fontSize: '14px', color: '#666' }}>
-                  {t.requesterId._id === user._id ? (
-                    <>Requested from {t.providerId.name}</>
-                  ) : (
-                    <>Requested by {t.requesterId.name}</>
-                  )}
+                  {t.requesterId === user._id ? 'Requested by you' : 'Requested from you'}
                 </div>
                 <div style={{ 
                   display: 'inline-block',
@@ -186,31 +184,17 @@ function Profile({ user, setUser }) {
                   fontSize: '12px',
                   fontWeight: '500',
                   marginTop: '5px',
-                  background: t.status === 'completed' ? '#e8f5e9' : t.status === 'accepted' ? '#e3f2fd' : '#fff3e0',
-                  color: t.status === 'completed' ? '#2e7d32' : t.status === 'accepted' ? '#1976d2' : '#ef6c00'
+                  background: t.status === 'completed' ? '#e8f5e9' : '#fff3e0',
+                  color: t.status === 'completed' ? '#2e7d32' : '#ef6c00'
                 }}>
-                  {t.status.charAt(0).toUpperCase() + t.status.slice(1)}
+                  {t.status}
                 </div>
               </div>
               
               <div style={{ textAlign: 'right' }}>
-                <div style={{ fontWeight: 'bold', color: t.requesterId._id === user._id ? '#f44336' : '#4CAF50' }}>
-                  {t.requesterId._id === user._id ? '-' : '+'}{t.credits} credits
+                <div style={{ fontWeight: 'bold', color: t.requesterId === user._id ? '#f44336' : '#4CAF50' }}>
+                  {t.requesterId === user._id ? '-' : '+'}{t.credits}
                 </div>
-                
-                {t.status === 'accepted' && t.requesterId._id === user._id && (
-                  <div style={{ marginTop: '10px' }}>
-                    <button 
-                      className="btn btn-success" 
-                      onClick={() => {
-                        const rating = prompt('Rate this service (1-5):', '5');
-                        if (rating) completeTransaction(t._id, parseInt(rating));
-                      }}
-                    >
-                      Complete & Rate
-                    </button>
-                  </div>
-                )}
               </div>
             </div>
           ))

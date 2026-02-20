@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/static/css/main.c93937fc.css",
-    "main.js": "/static/js/main.842ca4db.js",
-    "index.html": "/index.html",
-    "main.c93937fc.css.map": "/static/css/main.c93937fc.css.map",
-    "main.842ca4db.js.map": "/static/js/main.842ca4db.js.map"
+    "main.css": "/gshop-app/static/css/main.c93937fc.css",
+    "main.js": "/gshop-app/static/js/main.e3dd2d12.js",
+    "index.html": "/gshop-app/index.html",
+    "main.c93937fc.css.map": "/gshop-app/static/css/main.c93937fc.css.map",
+    "main.e3dd2d12.js.map": "/gshop-app/static/js/main.e3dd2d12.js.map"
   },
   "entrypoints": [
     "static/css/main.c93937fc.css",
-    "static/js/main.842ca4db.js"
+    "static/js/main.e3dd2d12.js"
   ]
 }

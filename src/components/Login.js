@@ -1,6 +1,5 @@
 ﻿import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 function Login({ setUser }) {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -13,21 +12,24 @@ function Login({ setUser }) {
     setLoading(true);
     setError('');
 
-    try {
-      const res = await axios.post('/api/auth/login', formData);
-      localStorage.setItem('token', res.data.token);
-      setUser(res.data.user);
+    // Demo mode - check localStorage for users
+    const users = JSON.parse(localStorage.getItem('gshop_users') || '[]');
+    const user = users.find(u => u.email === formData.email && u.password === formData.password);
+    
+    if (user) {
+      const { password, ...userWithoutPassword } = user;
+      setUser(userWithoutPassword);
       navigate('/dashboard');
-    } catch (err) {
-      setError(err.response?.data?.message || 'Login failed');
-    } finally {
-      setLoading(false);
+    } else {
+      setError('Invalid email or password');
     }
+    
+    setLoading(false);
   };
 
   return (
     <div className="card" style={{ maxWidth: '400px', margin: '50px auto' }}>
-      <h2>Login</h2>
+      <h2>Welcome Back</h2>
       
       {error && <div className="alert alert-error">{error}</div>}
       
@@ -54,7 +56,12 @@ function Login({ setUser }) {
           />
         </div>
         
-        <button type="submit" className="btn btn-primary" style={{ width: '100%' }} disabled={loading}>
+        <button 
+          type="submit" 
+          className="btn btn-primary" 
+          style={{ width: '100%' }} 
+          disabled={loading}
+        >
           {loading ? 'Logging in...' : 'Login'}
         </button>
       </form>

@@ -1,5 +1,4 @@
 ﻿import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 
 function Dashboard({ user }) {
   const [services, setServices] = useState([]);
@@ -12,49 +11,66 @@ function Dashboard({ user }) {
     fetchTransactions();
   }, [user]);
 
-  const fetchNearbyServices = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const res = await axios.get(`/api/services/nearby?lat=${user.location.lat}&lng=${user.location.lng}`, {
-        headers: { 'x-auth-token': token }
-      });
-      setServices(res.data);
-    } catch (err) {
-      setError('Failed to load services');
-    } finally {
-      setLoading(false);
-    }
+  const fetchNearbyServices = () => {
+    // Demo mode - get services from localStorage
+    const allServices = JSON.parse(localStorage.getItem('gshop_services') || '[]');
+    // Filter services within 10km (simplified distance check)
+    const nearby = allServices.filter(service => {
+      const dist = calculateDistance(
+        user.location.lat, user.location.lng,
+        service.location.lat, service.location.lng
+      );
+      return dist <= 10 && service.providerId !== user._id;
+    });
+    setServices(nearby);
+    setLoading(false);
   };
 
-  const fetchTransactions = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const res = await axios.get('/api/transactions', {
-        headers: { 'x-auth-token': token }
-      });
-      setTransactions(res.data.filter(t => t.status === 'pending' || t.status === 'accepted'));
-    } catch (err) {
-      console.error('Failed to load transactions');
-    }
+  const fetchTransactions = () => {
+    const allTransactions = JSON.parse(localStorage.getItem('gshop_transactions') || '[]');
+    const userTransactions = allTransactions.filter(t => 
+      t.requesterId === user._id || t.providerId === user._id
+    );
+    setTransactions(userTransactions);
   };
 
-  const requestService = async (serviceId) => {
-    try {
-      const token = localStorage.getItem('token');
-      await axios.post('/api/transactions/request', { serviceId }, {
-        headers: { 'x-auth-token': token }
-      });
-      alert('Service requested successfully!');
-      fetchTransactions();
-    } catch (err) {
-      alert(err.response?.data?.message || 'Request failed');
+  const calculateDistance = (lat1, lng1, lat2, lng2) => {
+    const R = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLng = (lng2 - lng1) * Math.PI / 180;
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLng/2) * Math.sin(dLng/2);
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  };
+
+  const requestService = (service) => {
+    if (user.credits < service.credits) {
+      alert('Insufficient credits');
+      return;
     }
+    
+    const transactions = JSON.parse(localStorage.getItem('gshop_transactions') || '[]');
+    const newTransaction = {
+      _id: Date.now().toString(),
+      requesterId: user._id,
+      providerId: service.providerId,
+      serviceId: service._id,
+      serviceTitle: service.title,
+      credits: service.credits,
+      status: 'pending'
+    };
+    
+    transactions.push(newTransaction);
+    localStorage.setItem('gshop_transactions', JSON.stringify(transactions));
+    alert('Service requested!');
+    fetchTransactions();
   };
 
   if (loading) return <div className="loading">Loading nearby services...</div>;
 
   return (
-    <div>
+    <div style={{ padding: '20px' }}>
       <div className="card">
         <h2>Nearby Services</h2>
         <p style={{ color: '#666', marginBottom: '20px' }}>
@@ -64,7 +80,7 @@ function Dashboard({ user }) {
         {services.length === 0 ? (
           <div className="empty-state">
             <h3>No services nearby</h3>
-            <p>Try expanding your search or check back later.</p>
+            <p>Add your own services in your profile!</p>
           </div>
         ) : (
           services.map(service => (
@@ -73,19 +89,15 @@ function Dashboard({ user }) {
                 <h3>{service.title}</h3>
                 <p>{service.description}</p>
                 <span className="category-tag">{service.category}</span>
-                <div style={{ marginTop: '8px', color: '#666', fontSize: '14px' }}>
-                  by {service.providerId.name} ⭐ {service.providerId.rating}/5
-                </div>
               </div>
               
               <div className="service-meta">
-                <div className="distance">{service.distance.toFixed(1)} km away</div>
                 <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#4CAF50', margin: '8px 0' }}>
                   {service.credits} credits
                 </div>
                 <button 
                   className="btn btn-primary"
-                  onClick={() => requestService(service._id)}
+                  onClick={() => requestService(service)}
                   disabled={user.credits < service.credits}
                 >
                   {user.credits < service.credits ? 'Insufficient Credits' : 'Request'}
@@ -98,13 +110,13 @@ function Dashboard({ user }) {
 
       {transactions.length > 0 && (
         <div className="card">
-          <h2>Active Requests</h2>
+          <h2>My Requests</h2>
           {transactions.map(t => (
             <div key={t._id} className="service-card">
               <div>
-                <strong>{t.serviceId.title}</strong>
+                <strong>{t.serviceTitle}</strong>
                 <div style={{ color: '#666', fontSize: '14px' }}>
-                  {t.status === 'pending' ? '⏳ Waiting for acceptance' : '✅ Accepted'}
+                  {t.status === 'pending' ? '⏳ Waiting' : '✅ ' + t.status}
                 </div>
               </div>
               <div>

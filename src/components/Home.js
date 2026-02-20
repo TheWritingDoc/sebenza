@@ -2,54 +2,126 @@
 import { Link } from 'react-router-dom';
 
 function Home() {
+  const loadDemoData = () => {
+    // Create demo users
+    const demoUsers = [
+      {
+        _id: '1',
+        name: 'John the Plumber',
+        email: 'john@example.com',
+        phone: '0712345678',
+        password: 'password123',
+        skills: ['Plumbing', 'Carpentry'],
+        location: { lat: -26.2041, lng: 28.0473 },
+        credits: 15,
+        rating: 5
+      },
+      {
+        _id: '2',
+        name: 'Maria the Tutor',
+        email: 'maria@example.com',
+        phone: '0723456789',
+        password: 'password123',
+        skills: ['Tutoring', 'Cooking'],
+        location: { lat: -26.2051, lng: 28.0483 },
+        credits: 12,
+        rating: 5
+      }
+    ];
+    
+    // Create demo services
+    const demoServices = [
+      {
+        _id: 's1',
+        providerId: '1',
+        providerName: 'John the Plumber',
+        title: 'Emergency Plumbing',
+        description: 'Fix leaks, blocked drains, burst pipes. Available 24/7!',
+        category: 'Plumbing',
+        credits: 3,
+        location: { lat: -26.2041, lng: 28.0473 }
+      },
+      {
+        _id: 's2',
+        providerId: '1',
+        providerName: 'John the Plumber',
+        title: 'Furniture Repair',
+        description: 'Fix broken chairs, tables, cabinets. Quality workmanship.',
+        category: 'Carpentry',
+        credits: 2,
+        location: { lat: -26.2041, lng: 28.0473 }
+      },
+      {
+        _id: 's3',
+        providerId: '2',
+        providerName: 'Maria the Tutor',
+        title: 'Math & Science Tutoring',
+        description: 'Grades 8-12. I come to your home. Patient teacher.',
+        category: 'Tutoring',
+        credits: 2,
+        location: { lat: -26.2051, lng: 28.0483 }
+      },
+      {
+        _id: 's4',
+        providerId: '2',
+        providerName: 'Maria the Tutor',
+        title: 'Home Cooking Lessons',
+        description: 'Learn to cook healthy meals for your family. 2-hour sessions.',
+        category: 'Cooking',
+        credits: 2,
+        location: { lat: -26.2051, lng: 28.0483 }
+      }
+    ];
+    
+    localStorage.setItem('gshop_users', JSON.stringify(demoUsers));
+    localStorage.setItem('gshop_services', JSON.stringify(demoServices));
+    
+    alert('Demo data loaded! You can now log in with:\n\njohn@example.com / password123\nOR\nmaria@example.com / password123');
+  };
+
   return (
     <div className="hero">
-      <h1>Trade Skills. No Money Needed.</h1>
-      <p>Join GShop - where unemployed and underemployed people exchange skills using credits instead of cash.</p>
-      <div style={{ display: 'flex', gap: '20px', justifyContent: 'center' }}>
-        <Link to="/register" className="btn btn-primary" style={{ fontSize: '18px', padding: '15px 30px' }}>
-          Get Started
-        </Link>
-        <Link to="/login" className="btn btn-secondary" style={{ fontSize: '18px', padding: '15px 30px' }}>
-          Login
-        </Link>
-      </div>
-      
-      <div className="card" style={{ marginTop: '50px', maxWidth: '800px', margin: '50px auto' }}>
-        <h2>How It Works</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '30px', marginTop: '30px' }}>
-          <div>
-            <div style={{ fontSize: '40px', marginBottom: '10px' }}>📝</div>
-            <h3>1. Register</h3>
-            <p>Sign up with your skills and location</p>
-          </div>
-          
-          <div>
-            <div style={{ fontSize: '40px', marginBottom: '10px' }}>🎁</div>
-            <h3>2. Get Credits</h3>
-            <p>Receive 10 starter credits to begin</p>
-          </div>
-          
-          <div>
-            <div style={{ fontSize: '40px', marginBottom: '10px' }}>🔍</div>
-            <h3>3. Find Services</h3>
-            <p>Discover nearby service providers</p>
-          </div>
-          
-          <div>
-            <div style={{ fontSize: '40px', marginBottom: '10px' }}>🤝</div>
-            <h3>4. Trade Skills</h3>
-            <p>Exchange services using credits</p>
-          </div>
+      <div className="hero-content">
+        <h1>GShop</h1>
+        <p className="tagline">Trade Skills, Not Money</p>
+        <p className="description">
+          Join your community in a moneyless exchange of skills and services. 
+          Earn credits by helping others, spend credits to get help.
+        </p>
+        
+        <div className="cta-buttons">
+          <Link to="/register" className="btn btn-primary">Get Started</Link>
+          <Link to="/login" className="btn btn-secondary">Login</Link>
         </div>
-      </div>
-      
-      <div className="card" style={{ maxWidth: '800px', margin: '0 auto 50px' }}>
-        <h2>Popular Categories</h2>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', justifyContent: 'center', marginTop: '20px' }}>
-          {['Plumbing', 'Electrical', 'Carpentry', 'Painting', 'Cleaning', 'Gardening', 'Cooking', 'Tutoring', 'Computer Repair', 'Sewing'].map(cat => (
-            <span key={cat} className="category-tag" style={{ fontSize: '14px', padding: '8px 16px' }}>{cat}</span>
-          ))}
+        
+        <div style={{ marginTop: '30px', padding: '20px', background: '#f0f8ff', borderRadius: '8px' }}>
+          <p><strong>Want to try it first?</strong></p>
+          <button onClick={loadDemoData} className="btn btn-success">
+            Load Demo Data
+          </button>
+          <p style={{ fontSize: '12px', marginTop: '10px', color: '#666' }}>
+            This creates sample users and services so you can explore the app.
+          </p>
+        </div>
+        
+        <div className="features">
+          <div className="feature">
+            <span className="feature-icon">🎯</span>
+            <h3>Share Your Skills</h3>
+            <p>Offer what you're good at</p>
+          </div>
+          
+          <div className="feature">
+            <span className="feature-icon">🤝</span>
+            <h3>Help Neighbors</h3>
+            <p>Build community connections</p>
+          </div>
+          
+          <div className="feature">
+            <span className="feature-icon">⭐</span>
+            <h3>Earn Credits</h3>
+            <p>Get help when you need it</p>
+          </div>
         </div>
       </div>
     </div>

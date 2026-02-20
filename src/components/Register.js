@@ -1,6 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 function Register({ setUser }) {
   const [formData, setFormData] = useState({
@@ -14,12 +13,16 @@ function Register({ setUser }) {
   const [locationError, setLocationError] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
+  
+  // Hardcoded categories - no backend needed
+  const categories = [
+    'Plumbing', 'Electrical', 'Carpentry', 'Painting', 'Cleaning',
+    'Gardening', 'Cooking', 'Tutoring', 'Computer Repair', 'Sewing',
+    'Driving', 'Babysitting', 'Elderly Care', 'Pet Care', 'Other'
+  ];
 
   useEffect(() => {
-    axios.get('/api/categories').then(res => setCategories(res.data));
-    
     // Get GPS location
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -53,20 +56,44 @@ function Register({ setUser }) {
       setError('Location access is required');
       return;
     }
+    
+    if (formData.skills.length === 0) {
+      setError('Please select at least one skill');
+      return;
+    }
 
     setLoading(true);
     setError('');
 
     try {
-      const res = await axios.post('/api/auth/register', {
+      // Demo mode - save to localStorage
+      const users = JSON.parse(localStorage.getItem('gshop_users') || '[]');
+      
+      // Check if email already exists
+      if (users.find(u => u.email === formData.email)) {
+        setError('Email already registered');
+        setLoading(false);
+        return;
+      }
+      
+      const newUser = {
+        _id: Date.now().toString(),
         ...formData,
-        location
-      });
-      localStorage.setItem('token', res.data.token);
-      setUser(res.data.user);
+        location,
+        credits: 10,
+        rating: 5,
+        services: []
+      };
+      
+      users.push(newUser);
+      localStorage.setItem('gshop_users', JSON.stringify(users));
+      
+      // Auto-login after registration
+      const { password, ...userWithoutPassword } = newUser;
+      setUser(userWithoutPassword);
       navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed');
+      setError('Registration failed: ' + err.message);
     } finally {
       setLoading(false);
     }
@@ -133,24 +160,33 @@ function Register({ setUser }) {
               <button
                 key={skill}
                 type="button"
-                className={`category-tag ${formData.skills.includes(skill) ? 'btn-primary' : ''}`}
+                className={`category-tag ${formData.skills.includes(skill) ? 'selected' : ''}`}
                 onClick={() => toggleSkill(skill)}
                 style={{
                   cursor: 'pointer',
-                  border: formData.skills.includes(skill) ? 'none' : '2px solid #e0e0e0',
-                  background: formData.skills.includes(skill) ? '' : 'white'
+                  padding: '8px 16px',
+                  borderRadius: '20px',
+                  border: formData.skills.includes(skill) ? '2px solid #4CAF50' : '2px solid #e0e0e0',
+                  background: formData.skills.includes(skill) ? '#4CAF50' : 'white',
+                  color: formData.skills.includes(skill) ? 'white' : '#333',
+                  fontWeight: formData.skills.includes(skill) ? 'bold' : 'normal'
                 }}
               >
                 {formData.skills.includes(skill) ? '✓ ' : ''}{skill}
               </button>
             ))}
           </div>
+          {formData.skills.length > 0 && (
+            <p style={{ marginTop: '10px', color: '#4CAF50' }}>
+              ✓ {formData.skills.length} skill(s) selected
+            </p>
+          )}
         </div>
         
         <button 
           type="submit" 
           className="btn btn-primary" 
-          style={{ width: '100%' }} 
+          style={{ width: '100%', marginTop: '20px' }} 
           disabled={loading || !location || formData.skills.length === 0}
         >
           {loading ? 'Creating Account...' : `Create Account (Get 10 Free Credits!)`}
