@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 320" width="860" height="320">
+
+  <defs>
+    <linearGradient id="saGreenGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00A35C"/>
+      <stop offset="100%" style="stop-color:#FFB81C"/>
+    </linearGradient>
+    <linearGradient id="darkBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#06120A"/>
+      <stop offset="100%" style="stop-color:#0A1F12"/>
+    </linearGradient>
+    <linearGradient id="greenShine" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00A35C"/>
+      <stop offset="100%" style="stop-color:#005C30"/>
+    </linearGradient>
+    <filter id="glowGreen">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="iconShadow">
+      <feDropShadow dx="0" dy="3" stdDeviation="6" flood-color="#007A4D" flood-opacity="0.5"/>
+    </filter>
+    <clipPath id="cardClip">
+      <rect x="0" y="0" width="860" height="320" rx="24"/>
+    </clipPath>
+  </defs>
+
+  <!-- Card background -->
+  <rect x="0" y="0" width="860" height="320" rx="24" fill="url(#darkBg)"/>
+
+  <!-- SA flag top band -->
+  <g clip-path="url(#cardClip)">
+    <rect x="0"   y="0" width="143" height="9" fill="#007A4D"/>
+    <rect x="143" y="0" width="143" height="9" fill="#FFB81C"/>
+    <rect x="286" y="0" width="143" height="9" fill="#DE3831"/>
+    <rect x="429" y="0" width="143" height="9" fill="#002395"/>
+    <rect x="572" y="0" width="143" height="9" fill="#000000"/>
+    <rect x="715" y="0" width="145" height="9" fill="#007A4D"/>
+
+    <!-- SA flag bottom band -->
+    <rect x="0"   y="311" width="143" height="9" fill="#007A4D"/>
+    <rect x="143" y="311" width="143" height="9" fill="#FFB81C"/>
+    <rect x="286" y="311" width="143" height="9" fill="#DE3831"/>
+    <rect x="429" y="311" width="143" height="9" fill="#002395"/>
+    <rect x="572" y="311" width="143" height="9" fill="#000000"/>
+    <rect x="715" y="311" width="145" height="9" fill="#007A4D"/>
+  </g>
+
+  <!-- Radial glow behind icon -->
+  <circle cx="148" cy="162" r="130" fill="#007A4D" opacity="0.08"/>
+
+  <!-- ===  ICON MARK === -->
+  <g transform="translate(22, 24)" filter="url(#iconShadow)">
+
+    <!-- SA flag Y-shape fused with baobab -->
+    <!-- Black outer Y left -->
+    <path d="M14 45 L88 163 L14 278" fill="none" stroke="#000" stroke-width="38" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"/>
+    <!-- Green left band -->
+    <path d="M28 45 L102 163 L28 278" fill="none" stroke="#007A4D" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Gold inner highlight -->
+    <path d="M28 45 L102 163 L28 278" fill="none" stroke="#FFB81C" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/>
+
+    <!-- Red top-right band -->
+    <path d="M242 14 L102 163" fill="none" stroke="#DE3831" stroke-width="26" stroke-linecap="round"/>
+    <!-- Blue bottom-right band -->
+    <path d="M242 312 L102 163" fill="none" stroke="#002395" stroke-width="26" stroke-linecap="round"/>
+
+    <!-- Horizontal stem (baobab trunk going to canopy) -->
+    <path d="M102 163 L224 163" fill="none" stroke="#007A4D" stroke-width="18" stroke-linecap="round"/>
+
+    <!-- Baobab canopy at tip -->
+    <circle cx="224" cy="163" r="56" fill="#007A4D" opacity="0.14"/>
+    <circle cx="224" cy="163" r="40" fill="#007A4D" opacity="0.22"/>
+    <ellipse cx="224" cy="158" rx="30" ry="24" fill="url(#greenShine)"/>
+
+    <!-- Roots -->
+    <path d="M28 278 Q10 287 -8 283" fill="none" stroke="#007A4D" stroke-width="5" stroke-linecap="round"/>
+    <path d="M28 278 Q14 296 2 300" fill="none" stroke="#007A4D" stroke-width="3" stroke-linecap="round" opacity="0.5"/>
+
+    <!-- People rising from canopy -->
+    <circle cx="207" cy="133" r="8"  fill="#FFB81C" filter="url(#glowGreen)"/>
+    <circle cx="224" cy="121" r="10" fill="white"   filter="url(#glowGreen)"/>
+    <circle cx="241" cy="133" r="8"  fill="#FFB81C" filter="url(#glowGreen)"/>
+
+    <!-- Rise arrow above centre figure -->
+    <path d="M224 105 L224 92 M219 99 L224 90 L229 99"
+          fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M207 119 L207 109" fill="none" stroke="#FFB81C" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+    <path d="M241 119 L241 109" fill="none" stroke="#FFB81C" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+
+    <!-- Ubuntu connecting arc -->
+    <path d="M198 138 Q224 148 250 138" fill="none" stroke="#FFB81C" stroke-width="1.5" stroke-dasharray="3,2" opacity="0.55"/>
+  </g>
+
+  <!-- === WORDMARK === -->
+  <text x="298" y="188" font-family="'Georgia', 'Palatino Linotype', serif"
+        font-size="130" font-weight="900" fill="white" letter-spacing="-5">Ge</text>
+  <text x="474" y="188" font-family="'Georgia', 'Palatino Linotype', serif"
+        font-size="130" font-weight="900" fill="url(#saGreenGold)" letter-spacing="-5">Shop</text>
+
+  <!-- SA flag stripe under wordmark -->
+  <rect x="298" y="202" width="87" height="6" rx="3" fill="#007A4D"/>
+  <rect x="391" y="202" width="87" height="6" rx="3" fill="#FFB81C"/>
+  <rect x="484" y="202" width="87" height="6" rx="3" fill="#DE3831"/>
+  <rect x="577" y="202" width="87" height="6" rx="3" fill="#002395"/>
+  <rect x="670" y="202" width="50" height="6" rx="3" fill="#000000"/>
+  <rect x="726" y="202" width="80" height="6" rx="3" fill="#007A4D"/>
+
+  <!-- Tagline -->
+  <text x="300" y="236" font-family="'Arial', sans-serif" font-size="16"
+        fill="#FFB81C" letter-spacing="5" font-weight="700">PROUDLY SOUTH AFRICAN</text>
+
+  <!-- Sub-tagline -->
+  <text x="300" y="264" font-family="'Arial', sans-serif" font-size="13"
+        fill="#4A9966" letter-spacing="3">Skills Exchange · Jobs Platform · Ubuntu</text>
+
+  <!-- Feature dots row -->
+  <g transform="translate(300, 280)">
+    <circle cx="7"   cy="7" r="6" fill="#007A4D"/>
+    <text x="18"  y="12" font-family="Arial" font-size="12" fill="#669977" letter-spacing="1">Find Work</text>
+    <line x1="98"  y1="0" x2="98"  y2="15" stroke="#1A3A28" stroke-width="1.5"/>
+    <circle cx="110" cy="7" r="6" fill="#FFB81C"/>
+    <text x="121" y="12" font-family="Arial" font-size="12" fill="#669977" letter-spacing="1">Share Skills</text>
+    <line x1="220" y1="0" x2="220" y2="15" stroke="#1A3A28" stroke-width="1.5"/>
+    <circle cx="232" cy="7" r="6" fill="#DE3831"/>
+    <text x="243" y="12" font-family="Arial" font-size="12" fill="#669977" letter-spacing="1">Grow Together</text>
+    <line x1="364" y1="0" x2="364" y2="15" stroke="#1A3A28" stroke-width="1.5"/>
+    <circle cx="376" cy="7" r="6" fill="#002395"/>
+    <text x="387" y="12" font-family="Arial" font-size="12" fill="#669977" letter-spacing="1">Mzansi Made</text>
+  </g>
+
+</svg>
