@@ -1,0 +1,66 @@
+# Dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+tests/node_modules/
+
+# Build outputs
+client/build/
+client/build_v2_old/
+
+# Large binaries
+*.exe
+*.zip
+*.tar.gz
+*.mp4
+*.avi
+*.mov
+*.wmv
+*.mkv
+
+# Screenshots and images (keep source logos, exclude generated screenshots)
+screenshots/
+archive/screenshots/
+archive/linkedin-automation/screenshots/
+
+# Database files
+tools/mongodb/
+tools/mongodb/db/
+*.pdb
+
+# Logs
+*.log
+ngrok-*.log
+server.err
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Uploads (user-generated content)
+uploads/
+server/uploads/
+
+# Releases
+releases/
+
+# Archive
+archive/
+
+# Claude/OpenClaw worktrees
+.claude/
+.codex/
+.agents/
+
+# Playwright test results
+test-results/

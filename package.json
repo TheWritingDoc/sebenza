@@ -1,0 +1,18 @@
+{
+  "scripts": {
+    "test:ui-smoke": "playwright test tests/ui_workflow.spec.js --config=playwright.local.config.cjs",
+    "test:ui-stress": "playwright test tests/ui_parallel_stress.spec.js --config=playwright.local.config.cjs",
+    "test:api-regression": "python3 tests/api_regression.py",
+    "test:regression": "npm run test:ui-smoke && npm run test:ui-stress && npm run test:api-regression"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.60.0"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "csurf": "^1.11.0",
+    "express-rate-limit": "^8.5.2",
+    "express-validator": "^7.3.2",
+    "helmet": "^8.2.0"
+  }
+}

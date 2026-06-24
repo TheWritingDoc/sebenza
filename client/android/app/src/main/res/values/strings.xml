@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">GShop</string>
+    <string name="title_activity_main">GShop</string>
+    <string name="package_name">com.gshop.app</string>
+    <string name="custom_url_scheme">com.gshop.app</string>
+</resources>
